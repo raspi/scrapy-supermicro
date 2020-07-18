@@ -122,6 +122,7 @@ class BaseSpider(scrapy.Spider):
 
         if isinstance(cpuinfo, list):
             for i in reversed(cpuinfo):
+                # Usually the last line or second last line contains the socket name, so search it in reverse
                 if 'Socket' in i:
                     data["_socket"] = cpu_split(i)
                     break

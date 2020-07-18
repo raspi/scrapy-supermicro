@@ -121,11 +121,15 @@ class BaseSpider(scrapy.Spider):
         cpuinfo = data['Processor/Chipset']['CPU']
 
         if isinstance(cpuinfo, list):
+            found = False
             for i in reversed(cpuinfo):
                 # Usually the last line or second last line contains the socket name, so search it in reverse
                 if 'Socket' in i:
                     data["_socket"] = cpu_split(i)
+                    found = True
                     break
+            if not found:
+                raise ValueError("Socket information was not found!")
         else:
             data["_socket"] = cpu_split(cpuinfo)
 

@@ -71,6 +71,8 @@ class BaseSpider(scrapy.Spider):
 
                 for item in feature.xpath("td[contains(@class, 'description')]/ul/li"):
                     x = "".join(item.xpath(".//text()").getall()).strip()
+
+                    x = x.replace("\x99", "")  # ????
                     x = x.replace("\u2122", "")  # tm
                     x = x.replace("\u00ae", "")  # (c)
                     x = x.replace("\u2021", "")  #

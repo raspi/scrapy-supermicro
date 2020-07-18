@@ -17,6 +17,15 @@ def cleantxt(v: str) -> str:
     return v
 
 
+def cpu_split(v: str) -> str:
+    if ',' in v:
+        return v.split(",")[0]
+    elif ';' in v:
+        return v.split(";")[0]
+
+    return v
+
+
 class BaseSpider(scrapy.Spider):
     """
     Base spider, not to be used directly
@@ -112,10 +121,9 @@ class BaseSpider(scrapy.Spider):
         cpuinfo = data['Processor/Chipset']['CPU']
 
         if isinstance(cpuinfo, list):
-            socket = cpuinfo[1].split(",")[0]
-            data["_socket"] = socket
+            data["_socket"] = cpu_split(cpuinfo[1])
         else:
-            data["_socket"] = cpuinfo.split(",")[0]
+            data["_socket"] = cpu_split(cpuinfo)
 
         data["_socket"] = data["_socket"].replace("supported", "").strip()
 
